@@ -1,0 +1,20 @@
+{
+    "name": "pam-lite-monorepo",
+    "version": "1.0.0",
+    "private": true,
+    "workspaces": [
+        "apps/*",
+        "packages/*"
+    ],
+    "scripts": {
+        "dev": "concurrently -n \"API,WEB\" -c \"blue,green\" \"npm run dev -w @pam-lite/api\" \"npm run dev -w @pam-lite/web\"",
+        "dev:api": "npm run dev -w @pam-lite/api",
+        "dev:web": "npm run dev -w @pam-lite/web",
+        "build": "npm run build --workspaces --if-present",
+        "lint": "npm run lint --workspaces --if-present",
+        "test": "npm run test --workspaces --if-present"
+    },
+    "devDependencies": {
+        "concurrently": "^9.2.1"
+    }
+}
