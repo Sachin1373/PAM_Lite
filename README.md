@@ -238,3 +238,17 @@ Used to document:
 * MFA integration
 
 ---
+
+Command	Description
+npm run dev	Starts the entire stack (API + Web) in parallel.
+npm run build	Builds all workspaces that have a build script.
+npm install	Installs dependencies for all workspaces (hoisted to root).
+🛠 Workspace Specific
+You can target individual apps without changing directories:
+
+Command	Description
+npm run dev:api	Starts only the Node.ts API server.
+npm run dev:web	Starts only the React Web dev server.
+npm run migrate:up -w @pam-lite/api	Runs database migrations for the API.
+npm install <pkg> -w @pam-lite/api	Install a package into the API workspace only.
+npm install <pkg> -w @pam-lite/web	Install a package into the Web workspace only.

@@ -24,7 +24,7 @@ export const addUserService = async (input: {
 
     const passwordHash = await bcrypt.hash(payload.password, 10);
 
-    const newUser = await userRepo.creatUser({
+    const newUser = await userRepo.createUser({
         tenantId: actor.tenantId,
         name: payload.name,
         email: payload.email,

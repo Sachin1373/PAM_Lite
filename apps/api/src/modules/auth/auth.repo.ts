@@ -25,7 +25,7 @@ export const createTenant = async (name: string, client?: PoolClient): Promise<T
   return res.rows[0] ?? null;
 }
 
-export const creatUser = async (input: CreateUserInput, client?: PoolClient): Promise<UserPublic> => {
+export const createUser = async (input: CreateUserInput, client?: PoolClient): Promise<UserPublic> => {
   const db = client || pool;
   const res = await db.query<UserPublic>(
     `

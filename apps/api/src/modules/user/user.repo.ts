@@ -10,7 +10,7 @@ export const checkUserAlreadyExists = async (email: string, tenantId: string) =>
   return res.rows[0] ?? null;
 }
 
-export const creatUser = async (input: CreateUserInput): Promise<UserPublic> => {
+export const createUser = async (input: CreateUserInput): Promise<UserPublic> => {
   const res = await pool.query<UserPublic>(
     `
     INSERT INTO users (
@@ -60,12 +60,6 @@ export const checkTenant = async (tenant: string) => {
 
   return res.rows[0] ?? null;
 }
-
-// export const updateUserDetails = async(userId: string) => {
-//     const res = await pool.query(
-
-//     )
-// }
 
 export const updateUser = async (
   userId: string,

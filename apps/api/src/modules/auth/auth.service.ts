@@ -1,4 +1,4 @@
-import { findUserByEmail, creatUser } from "./auth.repo";
+import { findUserByEmail, createUser } from "./auth.repo";
 import jwt, { Secret } from "jsonwebtoken";
 import config from "../../config";
 import * as repo from "../auth/auth.repo";
@@ -31,7 +31,7 @@ export const register = async (input: {
         await client.query('BEGIN');
         const tenant = await repo.createTenant(input.tenantName, client);
         const passwordHash = await bcrypt.hash(input.owner.password, 10);
-        const user = await repo.creatUser({
+        const user = await repo.createUser({
             tenantId: tenant.id,
             name: input.owner.name,
             email: input.owner.email,
