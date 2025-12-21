@@ -19,7 +19,7 @@ export const addUserService = async (input: {
         payload.email,
         actor.tenantId
     );
-   
+
     if (exists) throw new Error('User already exists');
 
     const passwordHash = await bcrypt.hash(payload.password, 10);
@@ -33,17 +33,35 @@ export const addUserService = async (input: {
         createdBy: actor.userId,
     })
 
-    return { user : newUser }
+    return { user: newUser }
 }
 
 export const getUserService = async (tenantId: string) => {
     const tenantExists = await userRepo.checkTenant(tenantId);
-    if (!tenantExists) throw Error ("Tenant not Found")
-    
+    if (!tenantExists) throw Error("Tenant not Found")
+
     const users = await userRepo.getUsers(tenantId)
 
     return { users }
 
 }
 
-// export const updateUserService = async ()
+
+export const updateUserService = async (
+    actor: { tenantId: string },
+    userId: string,
+    payload: { name?: string; role?: string }
+) => {
+    const updatedUser = await userRepo.updateUser(userId, actor.tenantId, payload);
+    if (!updatedUser) throw new Error("User not found or update failed");
+    return { user: updatedUser };
+};
+
+export const deleteUserService = async (
+    actor: { tenantId: string },
+    userId: string
+) => {
+    const deleted = await userRepo.deleteUser(userId, actor.tenantId);
+    if (!deleted) throw new Error("User not found");
+    return { success: true };
+};
