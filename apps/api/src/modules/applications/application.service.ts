@@ -3,7 +3,7 @@ import { actor, createApplication } from "./application.types";
 
 
 export const addApplicationService = async (data: { creator: actor, payload: createApplication }) => {
-    // console.log('data :', data)
+
     const applicationExisits = await checkApplication(data.creator.userId, data.creator.tenantId, data.payload.name)
     if (applicationExisits) throw Error("Application Already Exists")
     const auth_config_data = {
@@ -11,7 +11,7 @@ export const addApplicationService = async (data: { creator: actor, payload: cre
         username: data.payload.auth_config.username,
         password: data.payload.auth_config.password,
     }
-    console.log('data :', auth_config_data)
+    
     const application = await addApplication({
         tenant_id: data.creator.tenantId,
         name: data.payload.name,

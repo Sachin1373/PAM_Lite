@@ -4,7 +4,6 @@ import { Request, Response } from 'express';
 
 export const addApplicationController = async (req: Request, res: Response) => {
     try {
-        console.log(req.body)
         const result = await service.addApplicationService({ creator: req.user, payload: req.body });
         res.status(201).json(result);
     } catch (error: any) {

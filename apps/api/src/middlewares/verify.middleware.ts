@@ -14,6 +14,7 @@ declare global {
 export const verify = (req: Request, res: Response, next: NextFunction) => {
     const authHeader = req.headers.authorization || '';
     const [type, token] = authHeader.split(' ');
+
     if (type !== 'Bearer' || !token) {
      return res.status(401).json({ message: 'Invalid Authorization format' });
     }
@@ -25,8 +26,8 @@ export const verify = (req: Request, res: Response, next: NextFunction) => {
         )
         req.user = decode;
         next();
-    } catch (error: any) {
-        return res.status(401).json({ message: 'Invalid or expired token'});
+    } catch (error) {
+        return res.status(401).json({ message: 'Invalid or expired token' });
     }
 
 }
