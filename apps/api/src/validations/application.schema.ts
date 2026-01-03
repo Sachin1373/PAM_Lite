@@ -5,6 +5,12 @@ export const createApplicationSchema = z.object({
     description: z.string().optional(),
     target_url: z.string().url("Invalid URL provided"),
     app_type: z.enum(["WEB", "DATABASE"]),
+    auth_config: z
+    .object({
+      auth_type: z.enum(['basic', 'oidc', 'saml', 'api_key']),
+      username: z.string().optional(),
+      password: z.string().optional()
+    })
 });
 
 export const updateApplicationSchema = z.object({

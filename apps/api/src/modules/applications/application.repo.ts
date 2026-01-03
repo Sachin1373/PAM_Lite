@@ -8,16 +8,18 @@ export const addApplication = async (data: any) => {
             name,
             type,
             target_url,
+            auth_config,
             description,
             created_by
         )
-        VALUES ($1, $2, $3, $4, $5, $6)
+        VALUES ($1, $2, $3, $4, $5, $6, $7)
         RETURNING
         id,
         tenant_id,
         name,
         type,
         target_url,
+        auth_config,
         description,
         created_by
         `,
@@ -26,6 +28,7 @@ export const addApplication = async (data: any) => {
             data.name,
             data.type,
             data.target_url,
+            data.auth_config,
             data.description,
             data.created_by
         ]
