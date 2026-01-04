@@ -1,6 +1,6 @@
 import crypto from 'crypto';
 import { CreateSessionPayload, Session } from "./session.types";
-import { createSession, getAccessRequestForSession, getApplicationForSession } from "./session.repo";
+import { createSession, getAccessRequestForSession, getApplicationForSession, getSessionDetails, sessionRevoke } from "./session.repo";
 // Importing updateAccessRequestStatus from access_req module to reuse
 import { updateAccessRequestStatus } from "../access_request/access_req.repo";
 
@@ -54,3 +54,15 @@ export const createSessionService = async (
 
     return session;
 };
+
+export const validateSessionService = async (token: string) => {
+    const session = await getSessionDetails(token)
+    // console.log("session :", session)
+    if (!session) return false;
+    if (session.expires_at <= new Date()) {
+        sessionRevoke(session.id)
+        return null
+    }
+
+    return session
+}
