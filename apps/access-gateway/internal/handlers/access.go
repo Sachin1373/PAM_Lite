@@ -4,13 +4,11 @@ import (
 	"net/http"
 
 	"github.com/Sachin1373/PAM_Lite/access-gateway/internal/config"
+	"github.com/Sachin1373/PAM_Lite/access-gateway/internal/proxy"
 	"github.com/Sachin1373/PAM_Lite/access-gateway/internal/session"
 	"github.com/labstack/echo/v4"
 	"github.com/rs/zerolog/log"
 )
-
-type sessionData struct {
-}
 
 func AccessHandler(c echo.Context, cfg *config.Config) error {
 	//Extract the token from params
@@ -37,20 +35,15 @@ func AccessHandler(c echo.Context, cfg *config.Config) error {
 		return c.JSON(http.StatusUnauthorized, map[string]string{"error": "invalid or expired session"})
 	}
 
-	return c.JSON(http.StatusOK, map[string]interface{}{
-		"status":        "ok",
-		"user_id":       sessionResp.UserID,
-		"tenant_id":     sessionResp.TenantID,
-		"application":   sessionResp.ApplicationID,
-		"access_id":     sessionResp.AccessRequestID,
-		"target_url":    sessionResp.TargetURL,
-		"expires_at":    sessionResp.ExpiresAt,
-		"is_active":     sessionResp.IsActive,
-		"last_accessed": sessionResp.LastAccessed,
-		"auth_config": map[string]string{
-			"username":  sessionResp.AuthConfig.Username,
-			"password":  sessionResp.AuthConfig.Password,
-			"auth_type": sessionResp.AuthConfig.AuthType,
+	proxyCtx := &proxy.ProxyContext{
+		TargetURL: sessionResp.TargetURL,
+		ExpiresAt: sessionResp.ExpiresAt,
+		AuthConfig: proxy.AuthConfig{
+			AuthType: sessionResp.AuthConfig.AuthType,
+			Username: sessionResp.AuthConfig.Username,
+			Password: sessionResp.AuthConfig.Password,
 		},
-	})
+	}
+
+	return proxy.ReverseProxy(c, proxyCtx)
 }
